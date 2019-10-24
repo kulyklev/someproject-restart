@@ -3,8 +3,9 @@
     <span>The list of saved methods</span>
 
     <b-list-group class="text-left">
-      <b-list-group-item button v-for="program in programs"
+      <b-list-group-item button v-for="(program, index) in programs"
                          v-bind:key="program.id"
+                         :class="{ 'active': activeProgramId === index }"
                          @click="openProgram(program.id)">
         {{ program.name }}
       </b-list-group-item>
@@ -18,7 +19,6 @@ export default {
 
   data() {
     return {
-      programs: [],
     };
   },
 
@@ -27,13 +27,20 @@ export default {
       const programs = this.$store.state.savedPrograms;
       const selectedProgram = programs.find(program => program.id === programId);
 
+      this.$store.commit('setActiveProgramId', programId - 1);
       this.$store.commit('setInputCode', selectedProgram.code);
       this.$store.commit('setSelectedProgram', selectedProgram);
     },
   },
-
-  mounted() {
-    this.programs = this.$store.state.savedPrograms;
+  computed: {
+    activeProgramId() {
+      const { activeProgramId } = this.$store.state;
+      // this.openProgram(actiaveProgramId);
+      return activeProgramId;
+    },
+    programs() {
+      return this.$store.state.savedPrograms;
+    },
   },
 };
 </script>

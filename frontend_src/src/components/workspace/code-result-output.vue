@@ -1,10 +1,8 @@
 <template>
   <b-container>
-    <b-row>
-      <h1>Here is output</h1>
-    </b-row>
+    <h1>Here is output</h1>
 
-    <b-row>
+    <b-row class="w-100">
       <highcharts :options="chartOptions"></highcharts>
     </b-row>
 

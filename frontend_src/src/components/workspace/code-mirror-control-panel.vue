@@ -1,6 +1,6 @@
 <template>
   <div class="text-left m-3">
-    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="true"/>
+    <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true"/>
 
     <b-row class="mb-1">
       <b-form-input v-model="selectedProgram" placeholder="Enter your program name"/>
@@ -25,19 +25,15 @@
           Save
         </b-button>
 
-        <b-button variant="outline-primary" class="mr-1">
+        <b-button variant="outline-primary" class="mr-1" @click="newProgram()">
           New
+        </b-button>
+
+        <b-button variant="outline-primary" class="mr-1">
+          Delete
         </b-button>
       </b-button-group>
     </b-row>
-
-    <!--<b-form-file
-      v-model="file"
-      :state="Boolean(file)"
-      placeholder="Choose a file or drop it here..."
-      drop-placeholder="Drop file here..."
-    ></b-form-file>-->
-
   </div>
 </template>
 
@@ -131,16 +127,20 @@ export default {
             this.$store.commit('setCodemirrorTheme', selectedCodemirrorTheme);
         },
       },
-      selectedProgram: function () {
-        // console.log(this.$store.state.codemirrorTheme )
-
-        if (this.$store.state.selectedProgram == null) {
-          return '';
-        } else {
-          return this.$store.state.selectedProgram.name;
-        }
+      selectedProgram: {
+          get() {
+              if (this.$store.state.selectedProgram == null) {
+                  return '';
+              } else {
+                  return this.$store.state.selectedProgram.name;
+              }
+          },
+          set(selectedProgramName) {
+              let tmp = this.selectedProgram;
+              tmp.name = selectedProgramName;
+              this.$store.commit('setSelectedProgram', tmp);
+          }
       }
-
     },
     methods: {
       runProgram() {
@@ -168,20 +168,46 @@ export default {
                   this.$store.commit('setPythonCodeErrors', e);
                   this.isLoading = false;
               });
+          }).catch(e => {
+              this.isLoading = false;
           });
         },
 
-        prepareChartData(codeResultOutput) {
-            if (codeResultOutput == null) {
-                alert('You didn`t return any data. Chart won`t be drown');
-            } else {
-              this.$store.commit('setCodeResultOutput', codeResultOutput);
-            }
-        },
+      newProgram() {
+          let programs = this.$store.state.savedPrograms;
+          let maxId = Math.max(...programs.map(program => program.id));
+          let newProgramId = maxId + 1;
 
-        getRandomInt () {
-            return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-        }
+          let newProgram = {
+              id: newProgramId,
+              name: 'New program',
+              code: ''
+          };
+
+          this.$store.commit('setActiveProgramId', newProgramId - 1);
+          programs.push(newProgram);
+      },
+
+      prepareChartData(codeResultOutput) {
+          if (codeResultOutput == null) {
+              alert('You didn`t return any data. Chart won`t be drown');
+          } else {
+            this.$store.commit('setCodeResultOutput', codeResultOutput);
+          }
+      },
+
+      getRandomInt () {
+          return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+      }
     },
+    /*mounted() {
+        const programs = this.$store.state.savedPrograms;
+        if (programs !== null) {
+            let minProgramId = Math.min(...programs.map(program => program.id));
+            this.$store.commit('setActiveProgramId', minProgramId);
+        } else {
+            this.newProgram();
+        }
+    }*/
 };
 </script>
