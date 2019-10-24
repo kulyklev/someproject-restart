@@ -143,9 +143,9 @@ export default {
 
     },
     methods: {
-        runProgram() {
-            const { code } = this.$store.state;
-            let codeResultOutput = null;
+      runProgram() {
+          const { code } = this.$store.state;
+          let codeResultOutput = null;
 /*
           functioddn yourCustomLog(msfsg) {
             var oldLog = console.log;
@@ -157,15 +157,18 @@ export default {
 
           window.console.log = yourCustomLog;*/
 
-            this.isLoading = true;
+          this.isLoading = true;
 
-            test().then(() => {
-                pyodide.loadPackage(['numpy', 'pandas']).then(() => {
-                    codeResultOutput = pyodide.runPython(code);
-                    this.prepareChartData(codeResultOutput);
-                    this.isLoading = false;
-                });
-            });
+          test().then(() => {
+              pyodide.loadPackage(['numpy', 'pandas']).then(() => {
+                  codeResultOutput = pyodide.runPython(code);
+                  this.prepareChartData(codeResultOutput);
+                  this.isLoading = false;
+              }).catch(e => {
+                  this.$store.commit('setPythonCodeErrors', e);
+                  this.isLoading = false;
+              });
+          });
         },
 
         prepareChartData(codeResultOutput) {

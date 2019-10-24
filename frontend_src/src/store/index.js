@@ -45,6 +45,7 @@ export default new Vuex.Store({
     selectedProgram: null,
     code: '',
     codeResultOutput: '',
+    pythonCodeErrors: '',
   },
   mutations: {
     setCodemirrorTheme(state, selectedCodemirrorTheme) {
@@ -58,6 +59,9 @@ export default new Vuex.Store({
     },
     setSelectedProgram(state, selectedProgram) {
       state.selectedProgram = selectedProgram;
+    },
+    setPythonCodeErrors(state, pythonCodeErrors) {
+      state.pythonCodeErrors = pythonCodeErrors;
     },
   },
   actions: {

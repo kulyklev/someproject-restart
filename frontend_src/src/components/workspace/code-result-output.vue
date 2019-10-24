@@ -1,8 +1,18 @@
 <template>
-  <div>
-    <h1>Here is output</h1>
-    <highcharts :options="chartOptions"></highcharts>
-  </div>
+  <b-container>
+    <b-row>
+      <h1>Here is output</h1>
+    </b-row>
+
+    <b-row>
+      <highcharts :options="chartOptions"></highcharts>
+    </b-row>
+
+    <b-row >
+      <h1>Python errors</h1>
+      <pre class="text-left border">{{ pythonCodeErrors }}</pre>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -29,6 +39,11 @@ export default {
         }],
       },
     };
+  },
+  computed: {
+    pythonCodeErrors() {
+      return this.$store.state.pythonCodeErrors;
+    },
   },
   watch: {
     '$store.state.codeResultOutput': {

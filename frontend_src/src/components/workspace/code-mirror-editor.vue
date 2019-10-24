@@ -1,7 +1,9 @@
 <template>
   <div>
     <code-mirror-control-panel></code-mirror-control-panel>
-    <codemirror v-model="code" :options="cmOptions" class="CodeMirrorEditor text-left"></codemirror>
+    <codemirror v-model="code"
+                :options="cmOptions"
+                class="CodeMirrorEditor text-left border"/>
   </div>
 </template>
 
