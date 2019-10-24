@@ -3,7 +3,7 @@
     <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true"/>
 
     <b-row class="mb-1">
-      <b-form-input v-model="selectedProgram" placeholder="Enter your program name"/>
+      <b-form-input v-model="selectedProgram.name" placeholder="Enter your program name"/>
     </b-row>
 
     <b-row>
@@ -132,7 +132,7 @@ export default {
               if (this.$store.state.selectedProgram == null) {
                   return '';
               } else {
-                  return this.$store.state.selectedProgram.name;
+                  return this.$store.state.selectedProgram;
               }
           },
           set(selectedProgramName) {
@@ -200,14 +200,5 @@ export default {
           return Math.floor(Math.random() * (50 - 5 + 1)) + 5
       }
     },
-    /*mounted() {
-        const programs = this.$store.state.savedPrograms;
-        if (programs !== null) {
-            let minProgramId = Math.min(...programs.map(program => program.id));
-            this.$store.commit('setActiveProgramId', minProgramId);
-        } else {
-            this.newProgram();
-        }
-    }*/
 };
 </script>

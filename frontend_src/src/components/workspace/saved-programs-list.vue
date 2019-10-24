@@ -35,7 +35,6 @@ export default {
   computed: {
     activeProgramId() {
       const { activeProgramId } = this.$store.state;
-      // this.openProgram(actiaveProgramId);
       return activeProgramId;
     },
     programs() {
