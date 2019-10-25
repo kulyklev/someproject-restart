@@ -146,18 +146,10 @@ export default {
         }
         return this.$store.state.selectedProgram;
       },
-      set(selectedProgramName) {
-        const tmp = this.selectedProgram;
-        tmp.code = selectedProgramName;
-        this.$store.commit('setSelectedProgram', tmp);
-      },
-    },
-    code: {
-      get() {
-        return this.$store.state.code;
-      },
-      set(setInputCode) {
-        this.$store.commit('setInputCode', setInputCode);
+      set(newCode) {
+        const program = this.selectedProgram;
+        program.code = newCode;
+        this.$store.commit('setSelectedProgram', program);
       },
     },
   },

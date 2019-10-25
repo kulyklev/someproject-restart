@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import { test } from '../../pyodide/pyodide';
-// Import component
-import Loading from 'vue-loading-overlay';
-// Import stylesheet
-import 'vue-loading-overlay/dist/vue-loading.css';
+  import {test} from '../../pyodide/pyodide';
+  // Import component
+  import Loading from 'vue-loading-overlay';
+  // Import stylesheet
+  import 'vue-loading-overlay/dist/vue-loading.css';
 
-export default {
+  export default {
   name: 'code-mirror-control-panel',
   data() {
     return {
@@ -128,18 +128,17 @@ export default {
         },
       },
       selectedProgram: {
-          get() {
-              if (this.$store.state.selectedProgram == null) {
-                  return '';
-              } else {
-                  return this.$store.state.selectedProgram;
-              }
-          },
-          set(selectedProgramName) {
-              let tmp = this.selectedProgram;
-              tmp.name = selectedProgramName;
-              this.$store.commit('setSelectedProgram', tmp);
+        get() {
+          if (this.$store.state.selectedProgram == null) {
+              return '';
           }
+          return this.$store.state.selectedProgram;
+        },
+        set(selectedProgramName) {
+          let program = this.selectedProgram;
+          program.name = selectedProgramName;
+          this.$store.commit('setSelectedProgram', program);
+        }
       }
     },
     methods: {
@@ -176,15 +175,13 @@ export default {
       newProgram() {
           let programs = this.$store.state.savedPrograms;
           let maxId = Math.max(...programs.map(program => program.id));
-          let newProgramId = maxId + 1;
-
           let newProgram = {
-              id: newProgramId,
+              id: maxId + 1,
               name: 'New program',
               code: ''
           };
 
-          this.$store.commit('setActiveProgramId', newProgramId - 1);
+          this.$store.commit('setSelectedProgram', newProgram);
           programs.push(newProgram);
       },
 

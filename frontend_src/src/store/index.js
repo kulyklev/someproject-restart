@@ -52,9 +52,6 @@ export default new Vuex.Store({
     setCodemirrorTheme(state, selectedCodemirrorTheme) {
       state.codemirrorTheme = selectedCodemirrorTheme;
     },
-    setInputCode(state, inputCode) {
-      state.code = inputCode;
-    },
     setCodeResultOutput(state, codeResultOutput) {
       state.codeResultOutput = codeResultOutput;
     },
@@ -63,9 +60,6 @@ export default new Vuex.Store({
     },
     setPythonCodeErrors(state, pythonCodeErrors) {
       state.pythonCodeErrors = pythonCodeErrors;
-    },
-    setActiveProgramId(state, activeProgramId) {
-      state.activeProgramId = activeProgramId;
     },
   },
   actions: {
