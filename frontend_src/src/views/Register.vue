@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="register">
     <h1>This is a login page</h1>
     <b-container>
       <b-row>
