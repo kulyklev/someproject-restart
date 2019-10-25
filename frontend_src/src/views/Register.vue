@@ -10,7 +10,7 @@
                 <b-form class="text-left">
                   <b-form-group id="name-input-group"
                                 label="Name:"
-                                label-for="input-1">
+                                label-for="name-input">
                     <b-form-input v-model="form.name"
                                   id="name-input"
                                   type="text"
@@ -40,9 +40,9 @@
 
                   <b-form-group id="password-confirmation-input-group"
                                 label="Confirm your password:"
-                                label-for="password-confirm-input">
+                                label-for="password-confirmation-input">
                     <b-form-input v-model="form.passwordConfirmation"
-                                  id="password-confirm-input"
+                                  id="password-confirmation-input"
                                   type="password"
                                   placeholder="Confirm your password"
                                   required/>
