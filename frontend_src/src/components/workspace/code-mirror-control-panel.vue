@@ -21,7 +21,7 @@
           <font-awesome-icon icon="play" />
         </b-button>
 
-        <b-button variant="outline-primary" class="mr-1">
+        <b-button variant="outline-primary" class="mr-1" @click="saveProgram()">
           Save
         </b-button>
 
@@ -29,7 +29,7 @@
           New
         </b-button>
 
-        <b-button variant="outline-primary" class="mr-1">
+        <b-button variant="outline-primary" class="mr-1" @click="deleteProgram()">
           Delete
         </b-button>
       </b-button-group>
@@ -133,8 +133,6 @@
         },
         set(newName) {
             const { selectedProgram } = this;
-            console.log("program" + selectedProgram.name);
-            console.log("new name" + newName);
 
             if (selectedProgram.name !== newName) {
                 selectedProgram.name = newName;
@@ -202,6 +200,23 @@
           } else {
             this.$store.commit('setCodeResultOutput', codeResultOutput);
           }
+      },
+
+      saveProgram() {
+          let program = this.selectedProgram;
+          program.changed = false;
+
+          this.$store.commit('setSelectedProgram', program);
+          // TODO  Make saving to server
+      },
+
+      deleteProgram() {
+          let programs = this.$store.state.savedPrograms;
+          const minProgramId = Math.min(...programs.map(program => program.id));
+          const selectedProgram = programs.find(program => program.id === minProgramId);
+
+          this.$store.commit('deleteSavedProgram', this.selectedProgram);
+          this.$store.commit('setSelectedProgram', selectedProgram);
       }
     },
 };
