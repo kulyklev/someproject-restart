@@ -182,7 +182,7 @@
           };
 
           this.$store.commit('setSelectedProgram', newProgram);
-          programs.push(newProgram);
+          this.$store.commit('setNewProgram', newProgram);
       },
 
       prepareChartData(codeResultOutput) {

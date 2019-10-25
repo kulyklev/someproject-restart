@@ -29,7 +29,14 @@ export default {
   },
   methods: {
     createFirstProgram() {
+      const newProgram = {
+        id: 1,
+        name: 'New program',
+        code: '',
+      };
 
+      this.$store.commit('setSelectedProgram', newProgram);
+      this.$store.commit('setNewProgram', newProgram);
     },
     selectProgramWithMinId(programs) {
       const minProgramId = Math.min(...programs.map(program => program.id));
@@ -40,7 +47,7 @@ export default {
   created() {
     const programs = this.$store.state.savedPrograms;
 
-    if (programs === []) {
+    if (programs.length === 0) {
       this.createFirstProgram();
     } else {
       this.selectProgramWithMinId(programs);

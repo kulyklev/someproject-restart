@@ -61,6 +61,9 @@ export default new Vuex.Store({
     setPythonCodeErrors(state, pythonCodeErrors) {
       state.pythonCodeErrors = pythonCodeErrors;
     },
+    setNewProgram(state, newProgram) {
+      state.savedPrograms.push(newProgram);
+    },
   },
   actions: {
   },
