@@ -34,10 +34,6 @@
         </b-button>
       </b-button-group>
     </b-row>
-
-    <b-row class="mt-2">
-      <b-badge variant="warning" v-if="selectedProgram.changed">Unsaved changes</b-badge>
-    </b-row>
   </div>
 </template>
 
