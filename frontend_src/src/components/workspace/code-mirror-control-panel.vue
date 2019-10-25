@@ -217,6 +217,7 @@
 
           this.$store.commit('deleteSavedProgram', this.selectedProgram);
           this.$store.commit('setSelectedProgram', selectedProgram);
+          // TODO  Make delete request to server
       }
     },
 };
