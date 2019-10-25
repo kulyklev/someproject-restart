@@ -1,15 +1,20 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/workspace">Workspace</router-link> |
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/login">Login</router-link>
-    </div>
+    <nav-header class="mb-4"></nav-header>
     <router-view/>
   </div>
 </template>
+
+<script>
+import NavHeader from './components/nav-header.vue';
+
+export default {
+  name: 'app',
+  components: {
+    NavHeader,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
