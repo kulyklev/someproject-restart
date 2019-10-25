@@ -1,6 +1,7 @@
 <template>
   <div class="register">
     <h1>This is a login page</h1>
+
     <b-container>
       <b-row>
         <b-col cols="12" sm="6" offset-sm="3">
