@@ -17,7 +17,6 @@
 
 <script>
 import CodeMirrorEditor from '../components/workspace/code-mirror-editor.vue';
-// import LineChart from '../components/workspace/result-chart.vue';
 import SavedProgramsList from '../components/workspace/saved-programs-list.vue';
 import CodeResultOutput from '../components/workspace/code-result-output.vue';
 
@@ -25,7 +24,6 @@ export default {
   name: 'Workspace',
   components: {
     CodeMirrorEditor,
-    // LineChart,
     CodeResultOutput,
     SavedProgramsList,
   },
