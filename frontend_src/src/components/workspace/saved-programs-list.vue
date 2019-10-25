@@ -5,7 +5,7 @@
     <b-list-group class="text-left">
       <b-list-group-item button v-for="(program, index) in programs"
                          v-bind:key="program.id"
-                         :class="{ 'active': activeProgramId === index }"
+                         :class="{ 'active': (selectedProgram.id - 1) === index }"
                          @click="openProgram(program.id)">
         {{ program.name }}
       </b-list-group-item>
@@ -27,15 +27,13 @@ export default {
       const programs = this.$store.state.savedPrograms;
       const selectedProgram = programs.find(program => program.id === programId);
 
-      this.$store.commit('setActiveProgramId', programId - 1);
-      this.$store.commit('setInputCode', selectedProgram.code);
       this.$store.commit('setSelectedProgram', selectedProgram);
     },
   },
   computed: {
-    activeProgramId() {
-      const { activeProgramId } = this.$store.state;
-      return activeProgramId;
+    selectedProgram() {
+      const { selectedProgram } = this.$store.state;
+      return selectedProgram;
     },
     programs() {
       return this.$store.state.savedPrograms;

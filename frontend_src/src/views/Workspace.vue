@@ -27,5 +27,24 @@ export default {
     CodeResultOutput,
     SavedProgramsList,
   },
+  methods: {
+    createFirstProgram() {
+
+    },
+    selectProgramWithMinId(programs) {
+      const minProgramId = Math.min(...programs.map(program => program.id));
+      const selectedProgram = programs.find(program => program.id === minProgramId);
+      this.$store.commit('setSelectedProgram', selectedProgram);
+    },
+  },
+  created() {
+    const programs = this.$store.state.savedPrograms;
+
+    if (programs === []) {
+      this.createFirstProgram();
+    } else {
+      this.selectProgramWithMinId(programs);
+    }
+  },
 };
 </script>
