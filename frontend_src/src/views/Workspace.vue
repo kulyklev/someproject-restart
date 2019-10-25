@@ -33,6 +33,7 @@ export default {
         id: 1,
         name: 'New program',
         code: '',
+        changed: true,
       };
 
       this.$store.commit('setSelectedProgram', newProgram);

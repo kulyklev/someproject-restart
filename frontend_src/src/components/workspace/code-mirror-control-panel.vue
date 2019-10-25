@@ -3,7 +3,7 @@
     <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true"/>
 
     <b-row class="mb-1">
-      <b-form-input v-model="selectedProgram.name" placeholder="Enter your program name"/>
+      <b-form-input v-model="programName" placeholder="Enter your program name"/>
     </b-row>
 
     <b-row>
@@ -33,6 +33,10 @@
           Delete
         </b-button>
       </b-button-group>
+    </b-row>
+
+    <b-row class="mt-2">
+      <b-badge variant="warning" v-if="selectedProgram.changed">Unsaved changes</b-badge>
     </b-row>
   </div>
 </template>
@@ -127,18 +131,27 @@
             this.$store.commit('setCodemirrorTheme', selectedCodemirrorTheme);
         },
       },
-      selectedProgram: {
+      programName: {
         get() {
+            return this.selectedProgram.name;
+        },
+        set(newName) {
+            const { selectedProgram } = this;
+            console.log("program" + selectedProgram.name);
+            console.log("new name" + newName);
+
+            if (selectedProgram.name !== newName) {
+                selectedProgram.name = newName;
+                selectedProgram.changed = true;
+                this.$store.commit('setSelectedProgram', selectedProgram);
+            }
+        }
+      },
+      selectedProgram() {
           if (this.$store.state.selectedProgram == null) {
               return '';
           }
           return this.$store.state.selectedProgram;
-        },
-        set(selectedProgramName) {
-          let program = this.selectedProgram;
-          program.name = selectedProgramName;
-          this.$store.commit('setSelectedProgram', program);
-        }
       }
     },
     methods: {
@@ -178,7 +191,8 @@
           let newProgram = {
               id: maxId + 1,
               name: 'New program',
-              code: ''
+              code: '',
+              changed: true,
           };
 
           this.$store.commit('setSelectedProgram', newProgram);

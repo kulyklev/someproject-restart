@@ -1,7 +1,7 @@
 <template>
   <div>
     <code-mirror-control-panel></code-mirror-control-panel>
-    <codemirror v-model="selectedProgram.code"
+    <codemirror v-model="code"
                 :options="cmOptions"
                 class="CodeMirrorEditor text-left border"/>
   </div>
@@ -139,18 +139,26 @@ export default {
     selectedCodemirrorTheme() {
       return this.$store.state.codemirrorTheme;
     },
-    selectedProgram: {
+    code: {
       get() {
-        if (this.$store.state.selectedProgram == null) {
-          return '';
-        }
-        return this.$store.state.selectedProgram;
+        return this.selectedProgram.code;
       },
       set(newCode) {
-        const program = this.selectedProgram;
-        program.code = newCode;
-        this.$store.commit('setSelectedProgram', program);
+        const { selectedProgram } = this;
+
+        if (selectedProgram.code !== newCode) {
+          selectedProgram.code = newCode;
+          selectedProgram.changed = true;
+          this.$store.commit('setSelectedProgram', selectedProgram);
+          this.$store.commit('updateSavedPrograms', selectedProgram);
+        }
       },
+    },
+    selectedProgram() {
+      if (this.$store.state.selectedProgram == null) {
+        return '';
+      }
+      return this.$store.state.selectedProgram;
     },
   },
   watch: {

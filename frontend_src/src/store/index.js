@@ -18,6 +18,7 @@ export default new Vuex.Store({
           + 'raw_data = pd.read_csv(pyodide.open_url(data_url), skiprows=1)\n'
           + '\n'
           + 'print(raw_data)',
+        changed: false,
       },
       {
         id: 2,
@@ -31,6 +32,7 @@ export default new Vuex.Store({
           + '\n'
           + 'f = open(tmp[0], "r")\n'
           + 'print(f.read())',
+        changed: false,
       },
       {
         id: 3,
@@ -40,13 +42,13 @@ export default new Vuex.Store({
           + 'x = np.linspace(0, 2.0 * np.pi, 100)\n'
           + 'y = np.sin(x)\n'
           + 'x, y',
+        changed: false,
       },
     ],
     selectedProgram: null,
     code: '',
     codeResultOutput: '',
     pythonCodeErrors: '',
-    activeProgramId: undefined,
   },
   mutations: {
     setCodemirrorTheme(state, selectedCodemirrorTheme) {
@@ -63,6 +65,12 @@ export default new Vuex.Store({
     },
     setNewProgram(state, newProgram) {
       state.savedPrograms.push(newProgram);
+    },
+    updateSavedPrograms(state, updatedProgram) {
+      const programs = state.savedPrograms;
+      const foundIndex = programs.findIndex(programm => programm.id === updatedProgram.id);
+      programs[foundIndex] = updatedProgram;
+      state.savedPrograms = programs;
     },
   },
   actions: {
