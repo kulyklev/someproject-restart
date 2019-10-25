@@ -8,6 +8,8 @@
                          :class="{ 'active': (selectedProgram.id - 1) === index }"
                          @click="openProgram(program.id)">
         {{ program.name }}
+        <b-badge variant="warning"
+                 :class="{ 'd-none': program.changed === false }">Unsaved</b-badge>
       </b-list-group-item>
     </b-list-group>
   </div>
