@@ -136,10 +136,8 @@ export default {
     };
   },
   computed: {
-    selectedCodemirrorTheme: {
-      get() {
-        return this.$store.state.codemirrorTheme;
-      },
+    selectedCodemirrorTheme() {
+      return this.$store.state.codemirrorTheme;
     },
     selectedProgram: {
       get() {
@@ -174,7 +172,3 @@ export default {
 
 };
 </script>
-
-<style scoped>
-
-</style>
