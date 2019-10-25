@@ -152,7 +152,7 @@
     },
     methods: {
       runProgram() {
-          const { code } = this.$store.state;
+          const { selectedProgram } = this.$store.state;
           let codeResultOutput = null;
 /*
           functioddn yourCustomLog(msfsg) {
@@ -169,7 +169,7 @@
 
           test().then(() => {
               pyodide.loadPackage(['numpy', 'pandas']).then(() => {
-                  codeResultOutput = pyodide.runPython(code);
+                  codeResultOutput = pyodide.runPython(selectedProgram.code);
                   this.prepareChartData(codeResultOutput);
                   this.isLoading = false;
               }).catch(e => {
@@ -196,6 +196,7 @@
       },
 
       prepareChartData(codeResultOutput) {
+          console.log(codeResultOutput);
           if (codeResultOutput == null) {
               alert('You didn`t return any data. Chart won`t be drown');
           } else {
