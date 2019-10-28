@@ -4,7 +4,14 @@ import Repository from './repository';
 
 export default {
   register(payload) {
-    return Repository.post('/register', payload);
+    const formData = new FormData();
+
+    formData.set('name', payload.name);
+    formData.set('email', payload.email);
+    formData.set('password', payload.password);
+    formData.set('password_confirmation', payload.passwordConfirmation);
+
+    return Repository.post('/register', formData);
   },
 
   login(payload) {

@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <h1>This is a login page</h1>
+    <h1>Registration</h1>
 
     <b-container>
       <b-row>
@@ -14,6 +14,7 @@
                                 label-for="name-input">
 
                     <b-form-input v-model="$v.form.name.$model"
+                                  :server-errors="serverErrors.name"
                                   id="name-input"
                                   type="text"
                                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
@@ -29,8 +30,8 @@
                                 label-for="email-input">
 
                     <b-form-input v-model="form.email"
+                                  :server-errors="serverErrors.name"
                                   id="email-input"
-
                                   :state="$v.form.email.$dirty ? !$v.form.email.$error : null"
                                   aria-describedby="email-input-live-feedback"/>
 
@@ -86,7 +87,6 @@ import {
 } from 'vuelidate/lib/validators';
 import RepositoryFactory from '../apiAccess/repositoryFactory';
 
-
 const AuthRepository = RepositoryFactory.get('auth');
 
 export default {
@@ -100,6 +100,7 @@ export default {
         password: null,
         passwordConfirmation: null,
       },
+      serverErrors: {},
     };
   },
   validations: {
@@ -129,7 +130,10 @@ export default {
         return;
       }
 
-      const { data } = AuthRepository.register(this.form);
+      const data = AuthRepository.register(this.form);
+      data.then((response) => {
+        console.log(response);
+      });
       console.log(data);
     },
   },
