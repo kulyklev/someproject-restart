@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'laravel_passport' => [
+        'client_id' => env('LARAVEL_PASSPORT_CLIENT_ID'),
+        'client_secret' => env('LARAVEL_PASSPORT_CLIENT_SECRET'),
+    ],
+
 ];
