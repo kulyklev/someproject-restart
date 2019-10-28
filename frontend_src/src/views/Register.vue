@@ -8,25 +8,35 @@
           <b-card>
             <b-card-text>
               <b-container>
-                <b-form class="text-left">
+                <b-form class="text-left" @submit.prevent="onRegister">
                   <b-form-group id="name-input-group"
                                 label="Name:"
                                 label-for="name-input">
-                    <b-form-input v-model="form.name"
+
+                    <b-form-input v-model="$v.form.name.$model"
                                   id="name-input"
                                   type="text"
-                                  placeholder="Enter your name"
-                                  required/>
+                                  :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                                  aria-describedby="name-input-live-feedback"/>
+
+                    <b-form-invalid-feedback id="name-input-live-feedback">
+                      This is a required field and must be at least 3 characters.
+                    </b-form-invalid-feedback>
                   </b-form-group>
 
                   <b-form-group id="email-input-group"
                                 label="Email address:"
                                 label-for="email-input">
+
                     <b-form-input v-model="form.email"
                                   id="email-input"
-                                  type="email"
-                                  placeholder="Enter your email"
-                                  required/>
+
+                                  :state="$v.form.email.$dirty ? !$v.form.email.$error : null"
+                                  aria-describedby="email-input-live-feedback"/>
+
+                    <b-form-invalid-feedback id="email-input-live-feedback">
+                      This is a required field and must be a valid email string.
+                    </b-form-invalid-feedback>
                   </b-form-group>
 
                   <b-form-group id="password-input-group"
@@ -35,8 +45,12 @@
                     <b-form-input v-model="form.password"
                                   id="password-input"
                                   type="password"
-                                  placeholder="Enter your password"
-                                  required/>
+                                  :state="$v.form.password.$dirty ? !$v.form.password.$error : null"
+                                  aria-describedby="password-input-live-feedback"/>
+
+                    <b-form-invalid-feedback id="password-input-live-feedback">
+                      This is a required field and must be at least 8 characters.
+                    </b-form-invalid-feedback>
                   </b-form-group>
 
                   <b-form-group id="password-confirmation-input-group"
@@ -45,8 +59,13 @@
                     <b-form-input v-model="form.passwordConfirmation"
                                   id="password-confirmation-input"
                                   type="password"
-                                  placeholder="Confirm your password"
-                                  required/>
+                                  :state="$v.form.passwordConfirmation.$dirty ?
+                                   !$v.form.passwordConfirmation.$error : null"
+                                  aria-describedby="password-confirmation-input-live-feedback"/>
+
+                    <b-form-invalid-feedback id="password-confirmation-input-live-feedback">
+                      This is a required field and must much password field.
+                    </b-form-invalid-feedback>
                   </b-form-group>
 
                   <b-button type="submit" variant="primary">Submit</b-button>
@@ -61,17 +80,58 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate';
+import {
+  required, minLength, maxLength, email as emailValidation, sameAs,
+} from 'vuelidate/lib/validators';
+import RepositoryFactory from '../apiAccess/repositoryFactory';
+
+
+const AuthRepository = RepositoryFactory.get('auth');
+
 export default {
   name: 'register',
+  mixins: [validationMixin],
   data() {
     return {
       form: {
-        name: '',
-        email: '',
-        password: '',
-        passwordConfirmation: '',
+        name: null,
+        email: null,
+        password: null,
+        passwordConfirmation: null,
       },
     };
+  },
+  validations: {
+    form: {
+      name: {
+        required,
+        minLength: minLength(4),
+        maxLength: maxLength(255),
+      },
+      email: {
+        required,
+        emailValidation,
+      },
+      password: {
+        required,
+      },
+      passwordConfirmation: {
+        required,
+        sameAsPassword: sameAs('password'),
+      },
+    },
+  },
+  methods: {
+    onRegister() {
+      this.$v.form.$touch();
+      if (this.$v.form.$invalid) {
+        return;
+      }
+
+      const { data } = AuthRepository.register(this.form);
+      console.log(data);
+    },
   },
 };
 </script>
