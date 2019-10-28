@@ -134,7 +134,6 @@ export default {
       data.then((response) => {
         console.log(response);
       });
-      console.log(data);
     },
   },
 };
