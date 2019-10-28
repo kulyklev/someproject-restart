@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: unicorn-php
     environment:
-      - PHP_IDE_CONFIG=serverName=unicorn-docker-server
+      - PHP_IDE_CONFIG=serverName=someproject-server
     depends_on:
       - db-postgresql
     volumes:
