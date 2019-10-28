@@ -22,6 +22,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    use AuthorizationServerRequest;
 
     /**
      * Where to redirect users after login.
@@ -55,7 +56,8 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
+            $this->clearLoginAttempts($request);
+            return $this->sendAuthorizationServerRequest($request);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -77,30 +79,6 @@ class LoginController extends Controller
         return $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
-    }
-
-    /**
-     * Send the response after the user was authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    protected function sendLoginResponse(Request $request)
-    {
-        $apiRequest = Request::create('/oauth/token', 'POST', [
-            'grant_type' => 'password',
-            'client_id' => config('services.laravel_passport.client_id'),
-            'client_secret' => config('services.laravel_passport.client_secret'),
-            'username' => $request->email,
-            'password' => $request->password,
-            'scope' => '',
-        ]);
-        //TODO Maybe I should remove refresh_token from response
-        $response = app()->handle($apiRequest);
-
-        $this->clearLoginAttempts($request);
-
-        return $response;
     }
 
     /**

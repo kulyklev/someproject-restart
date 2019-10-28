@@ -24,6 +24,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    use AuthorizationServerRequest;
 
     /**
      * Where to redirect users after registration.
@@ -56,7 +57,7 @@ class RegisterController extends Controller
 
 //        $this->guard()->login($user);
 
-        return response()->json($user, 201);
+        return $this->sendAuthorizationServerRequest($request);
     }
 
     /**
