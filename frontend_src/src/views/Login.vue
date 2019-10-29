@@ -8,9 +8,10 @@
             <b-card-text>
               <b-container>
                 <ValidationObserver ref="observer" v-slot="{ passes }">
-                  <b-form @submit.prevent="passes(onSubmit)" @reset="resetForm">
+                  <b-form class="text-left" @submit.prevent="passes(onSubmit)" @reset="resetForm">
                     <ValidationProvider rules="required|email"
                                         name="Email"
+                                        ref="emailProvider"
                                         v-slot="{ valid, errors }">
                       <b-form-group
                         label="Email address:"
@@ -31,6 +32,7 @@
                     <ValidationProvider
                       rules="required"
                       name="Password"
+                      ref="passwordProvider"
                       vid="password"
                       v-slot="{ valid, errors }"
                     >
@@ -103,8 +105,16 @@ export default {
         console.log(response.statusText);
         console.log(response.headers);
         console.log(response.config);
-      }).catch((error) => {
-        console.log(error.response);
+      }).catch((errorResponse) => {
+        const { errors } = errorResponse.response.data;
+
+        if (Object.prototype.hasOwnProperty.call(errors, 'email')) {
+          this.$refs.emailProvider.setErrors(errors.email);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(errors, 'password')) {
+          this.$refs.passwordProvider.setErrors(errors.password);
+        }
       });
     },
     resetForm() {
