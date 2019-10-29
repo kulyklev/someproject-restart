@@ -95,16 +95,19 @@ export default {
       }
       return null;
     },
-    onSubmit() {
-      console.log('Form submitted yay!');
 
+    onSubmit() {
       const data = AuthRepository.login(this.form);
+
       data.then((response) => {
-        console.log(response.data);
-        console.log(response.status);
-        console.log(response.statusText);
-        console.log(response.headers);
-        console.log(response.config);
+        const user = {
+          token: response.data.access_token,
+        };
+
+        localStorage.setItem('user-token', user.token);
+
+        this.loadPrograms();
+        this.$store.commit('setUser', user);
       }).catch((errorResponse) => {
         const { errors } = errorResponse.response.data;
 
@@ -117,14 +120,17 @@ export default {
         }
       });
     },
+
     resetForm() {
-      this.from.name = '';
       this.from.email = '';
       this.from.password = '';
-      this.from.passwordConfirmation = '';
       requestAnimationFrame(() => {
         this.$refs.observer.reset();
       });
+    },
+
+    loadPrograms() {
+
     },
   },
 };

@@ -49,6 +49,9 @@ export default new Vuex.Store({
     code: '',
     codeResultOutput: '',
     pythonCodeErrors: '',
+    user: {
+      token: localStorage.getItem('user-token') || null,
+    },
   },
   mutations: {
     setCodemirrorTheme(state, selectedCodemirrorTheme) {
@@ -78,8 +81,16 @@ export default new Vuex.Store({
       programs.splice(foundIndex, 1);
       state.savedPrograms = programs;
     },
+    setUser(state, user) {
+      state.user = user;
+    },
   },
   actions: {
+  },
+  getters: {
+    user(state) {
+      return state.user;
+    },
   },
   modules: {
   },
