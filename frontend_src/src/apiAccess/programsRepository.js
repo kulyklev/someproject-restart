@@ -9,7 +9,13 @@ export default {
   },
 
   save(newProgram) {
-    // TODO Save new program
+    const formData = new FormData();
+
+    formData.set('name', newProgram.name);
+    formData.set('program', newProgram.code);
+    console.log(Repository);
+
+    return Repository.post('/programs', formData);
   },
 
   update(updatedProgram) {

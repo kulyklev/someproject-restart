@@ -43,6 +43,8 @@
   import Loading from 'vue-loading-overlay';
   // Import stylesheet
   import 'vue-loading-overlay/dist/vue-loading.css';
+  import RepositoryFactory from '../../apiAccess/repositoryFactory';
+  const ProgramRepository = RepositoryFactory.get('program');
 
   export default {
   name: 'code-mirror-control-panel',
@@ -203,11 +205,19 @@
       },
 
       saveProgram() {
-          let program = this.selectedProgram;
+        let program = this.selectedProgram;
+          console.log('123')
           program.changed = false;
+        this.$store.commit('setSelectedProgram', program);
 
-          this.$store.commit('setSelectedProgram', program);
-          // TODO  Make saving to server
+        const data = ProgramRepository.save(program);
+        data.then((response) => {
+            console.log('222')
+          console.log(response.status);
+        }).catch((errorResponse) => {
+            console.log('333')
+          console.log(errorResponse.response.status);
+        })
       },
 
       deleteProgram() {

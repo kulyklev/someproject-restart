@@ -22,4 +22,8 @@ export default {
 
     return Repository.post('/login', formData);
   },
+
+  setAuthToken(token) {
+    Repository.defaults.headers.common['Authorization'] = token;
+  },
 };

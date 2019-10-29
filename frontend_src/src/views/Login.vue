@@ -104,6 +104,8 @@ export default {
           token: response.data.access_token,
         };
 
+        AuthRepository.setAuthToken(user.token);
+
         localStorage.setItem('user-token', user.token);
 
         this.loadPrograms();
