@@ -12,7 +12,9 @@
                   <b-form @submit.prevent="passes(onSubmit)" @reset="resetForm">
                     <ValidationProvider rules="required"
                                         name="Name"
-                                        v-slot="{ valid, errors }">
+                                        ref="nameProvider"
+                                        v-slot="{ valid, errors }"
+                                        maxlength="255">
                       <b-form-group
                         label="Name:"
                         label-for="nameInput"
@@ -29,6 +31,7 @@
 
                     <ValidationProvider rules="required|email"
                                         name="Email"
+                                        ref="emailProvider"
                                         v-slot="{ valid, errors }">
                       <b-form-group
                         label="Email address:"
@@ -49,8 +52,10 @@
                     <ValidationProvider
                       rules="required"
                       name="Password"
+                      ref="passwordProvider"
                       vid="password"
                       v-slot="{ valid, errors }"
+                      minlength="8"
                     >
                       <b-form-group
                         label="Password:"
@@ -71,6 +76,7 @@
                     <ValidationProvider
                       rules="required|confirmed:password"
                       name="Password confirmation"
+                      ref="passwordConfirmationProvider"
                       v-slot="{ valid, errors }"
                     >
                       <b-form-group label="Confirm Password:" label-for="exampleInput1">
@@ -114,10 +120,10 @@ export default {
   data() {
     return {
       form: {
-        name: null,
-        email: null,
-        password: null,
-        passwordConfirmation: null,
+        name: 'qwe',
+        email: 'qwe@qwe.com',
+        password: '123456789',
+        passwordConfirmation: '123',
       },
     };
   },
@@ -141,8 +147,20 @@ export default {
         console.log(response.statusText);
         console.log(response.headers);
         console.log(response.config);
-      }).catch((error) => {
-        console.log(error.response);
+      }).catch((errorResponse) => {
+        const { errors } = errorResponse.response.data;
+
+        if (Object.prototype.hasOwnProperty.call(errors, 'name')) {
+          this.$refs.nameProvider.setErrors(errors.name);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(errors, 'email')) {
+          this.$refs.emailProvider.setErrors(errors.email);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(errors, 'password')) {
+          this.$refs.passwordProvider.setErrors(errors.password);
+        }
       });
     },
     resetForm() {
@@ -153,19 +171,6 @@ export default {
       requestAnimationFrame(() => {
         this.$refs.observer.reset();
       });
-    },
-    onRegister() {
-
-
-      /* this.$v.form.$touch();
-      if (this.$v.form.$invalid) {
-        return;
-      }
-
-      const data = AuthRepository.register(this.form);
-      data.then((response) => {
-        console.log(response);
-      }); */
     },
   },
 };
