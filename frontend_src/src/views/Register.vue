@@ -7,9 +7,9 @@
         <b-col cols="12" sm="6" offset-sm="3">
           <b-card>
             <b-card-text>
-              <b-container class="text-left">
+              <b-container>
                 <ValidationObserver ref="observer" v-slot="{ passes }">
-                  <b-form @submit.prevent="passes(onSubmit)" @reset="resetForm">
+                  <b-form class="text-left" @submit.prevent="passes(onSubmit)" @reset="resetForm">
                     <ValidationProvider rules="required"
                                         name="Name"
                                         ref="nameProvider"
