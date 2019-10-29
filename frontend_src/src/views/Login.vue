@@ -7,36 +7,53 @@
           <b-card>
             <b-card-text>
               <b-container>
-                <b-form class="text-left" @submit.prevent="onLogin">
-                  <b-form-group id="email-input-group"
-                                label="Email address:"
-                                label-for="email-input">
-                    <b-form-input v-model="form.email"
-                                  id="email-input"
-                                  :state="$v.form.email.$dirty ? !$v.form.email.$error : null"
-                                  aria-describedby="email-input-live-feedback"/>
+                <ValidationObserver ref="observer" v-slot="{ passes }">
+                  <b-form @submit.prevent="passes(onSubmit)" @reset="resetForm">
+                    <ValidationProvider rules="required|email"
+                                        name="Email"
+                                        v-slot="{ valid, errors }">
+                      <b-form-group
+                        label="Email address:"
+                        label-for="exampleInput1"
+                        description="We'll never share your email with anyone else."
+                      >
+                        <b-form-input
+                          type="email"
+                          v-model="form.email"
+                          :state="errors[0] ? false : (valid ? true : null)"
+                          placeholder="Enter email"/>
+                        <b-form-invalid-feedback id="inputLiveFeedback">
+                          {{ errors[0] }}
+                        </b-form-invalid-feedback>
+                      </b-form-group>
+                    </ValidationProvider>
 
-                    <b-form-invalid-feedback id="email-input-live-feedback">
-                      This is a required field and must be a valid email address.
-                    </b-form-invalid-feedback>
-                  </b-form-group>
+                    <ValidationProvider
+                      rules="required"
+                      name="Password"
+                      vid="password"
+                      v-slot="{ valid, errors }"
+                    >
+                      <b-form-group
+                        label="Password:"
+                        description="We'll never share your password with anyone else."
+                      >
+                        <b-form-input
+                          type="password"
+                          v-model="form.password"
+                          :state="errors[0] ? false : (valid ? true : null)"
+                          placeholder="Enter password"
+                        ></b-form-input>
+                        <b-form-invalid-feedback id="inputLiveFeedback">
+                          {{ errors[0] }}
+                        </b-form-invalid-feedback>
+                      </b-form-group>
+                    </ValidationProvider>
 
-                  <b-form-group id="password-input-group"
-                                label="Password:"
-                                label-for="password-input">
-                    <b-form-input v-model="form.password"
-                                  id="password-input"
-                                  type="password"
-                                  :state="$v.form.password.$dirty ? !$v.form.password.$error : null"
-                                  aria-describedby="password-input-live-feedback"/>
-
-                    <b-form-invalid-feedback id="password-input-live-feedback">
-                      This is a required field.
-                    </b-form-invalid-feedback>
-                  </b-form-group>
-
-                  <b-button type="submit" variant="primary">Submit</b-button>
-                </b-form>
+                    <b-button type="submit" variant="primary" class="m-1">Submit</b-button>
+                    <b-button type="reset" variant="danger" class="m1">Reset</b-button>
+                  </b-form>
+                </ValidationObserver>
               </b-container>
             </b-card-text>
           </b-card>
@@ -47,15 +64,17 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate';
-import { required, email as emailValidation } from 'vuelidate/lib/validators';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import RepositoryFactory from '../apiAccess/repositoryFactory';
 
 const AuthRepository = RepositoryFactory.get('auth');
 
 export default {
   name: 'Login',
-  mixins: [validationMixin],
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+  },
   data() {
     return {
       form: {
@@ -64,23 +83,18 @@ export default {
       },
     };
   },
-  validations: {
-    form: {
-      email: {
-        required,
-        emailValidation,
-      },
-      password: {
-        required,
-      },
-    },
-  },
   methods: {
-    onLogin() {
-      this.$v.form.$touch();
-      if (this.$v.form.$invalid) {
-        return;
+    validateState(ref) {
+      if (
+        this.veeFields[ref]
+        && (this.veeFields[ref].dirty || this.veeFields[ref].validated)
+      ) {
+        return !this.veeErrors.has(ref);
       }
+      return null;
+    },
+    onSubmit() {
+      console.log('Form submitted yay!');
 
       const data = AuthRepository.login(this.form);
       data.then((response) => {
@@ -89,6 +103,17 @@ export default {
         console.log(response.statusText);
         console.log(response.headers);
         console.log(response.config);
+      }).catch((error) => {
+        console.log(error.response);
+      });
+    },
+    resetForm() {
+      this.from.name = '';
+      this.from.email = '';
+      this.from.password = '';
+      this.from.passwordConfirmation = '';
+      requestAnimationFrame(() => {
+        this.$refs.observer.reset();
       });
     },
   },
