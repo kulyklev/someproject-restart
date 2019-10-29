@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Workspace from '../views/Workspace.vue';
+import AuthGuard from './auth-guard';
 // import About from '../views/About.vue';
 
 Vue.use(VueRouter);
@@ -28,6 +29,7 @@ const routes = [
     path: '/workspace',
     name: 'workspace',
     component: Workspace,
+    beforeEnter: AuthGuard,
   },
   {
     path: '/faq',
