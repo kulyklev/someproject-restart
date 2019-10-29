@@ -31,3 +31,10 @@ Route::get('/password/reset/{token}', 'Auth\ResetPasswordController@getResetData
 Route::post('/email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 //Route::get('/email/verify', 'Auth\VerificationController@show')->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::resource('programs', 'ProgramController')->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
+});
