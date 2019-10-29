@@ -24,6 +24,6 @@ export default {
   },
 
   setAuthToken(token) {
-    Repository.defaults.headers.common['Authorization'] = token;
+    Repository.defaults.headers.common.AUTHORIZATION = `Bearer ${token}`;
   },
 };
