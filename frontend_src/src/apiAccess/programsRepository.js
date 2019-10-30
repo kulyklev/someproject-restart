@@ -18,7 +18,14 @@ export default {
   },
 
   update(updatedProgram) {
-    // TODO Update programs
+    const programId = updatedProgram.id;
+    const formData = new FormData();
+
+    formData.set('name', updatedProgram.name);
+    formData.set('program', updatedProgram.code);
+    formData.set('_method', 'PUT');
+
+    return Repository.post(`/programs/${programId}`, formData);
   },
 
   delete(programId) {
