@@ -38,7 +38,7 @@ class ProgramController extends Controller
         $user = Auth::user();
         $user->programs()->save($newProgram);
 
-        return response([], Response::HTTP_CREATED);
+        return response($newProgram, Response::HTTP_CREATED);
     }
 
     /**
