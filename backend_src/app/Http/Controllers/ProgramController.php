@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProgram;
+use App\Http\Requests\UpdateProgram;
 use App\Models\Program;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
@@ -17,7 +18,9 @@ class ProgramController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return $user->programs;
+        $userPrograms = $user->programs;
+
+        return response($userPrograms, Response::HTTP_OK);
     }
 
     /**
@@ -34,28 +37,36 @@ class ProgramController extends Controller
 
         $user = Auth::user();
         $user->programs()->save($newProgram);
+
+        return response([], Response::HTTP_CREATED);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param UpdateProgram $request
+     * @param Program $program
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProgram $request, Program $program)
     {
-        //
+        $program->name = $request->get('name');
+        $program->program = $request->get('program');
+        $program->save();
+
+        return response([], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Program $program
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Program $program)
     {
-        //
+        $program->delete();
+        return response([], Response::HTTP_OK);
     }
 }
