@@ -54,7 +54,7 @@ class ProgramController extends Controller
         $program->program = $request->get('program');
         $program->save();
 
-        return response([], Response::HTTP_OK);
+        return response($program, Response::HTTP_OK);
     }
 
     /**
