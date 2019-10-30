@@ -3,9 +3,9 @@
     <span>The list of saved methods</span>
 
     <b-list-group class="text-left">
-      <b-list-group-item button v-for="(program, index) in programs"
+      <b-list-group-item button v-for="(program) in programs"
                          v-bind:key="program.id"
-                         :class="{ 'active': (selectedProgram.id - 1) === index }"
+                         :class="{ 'active': (selectedProgram.id) === program.id }"
                          @click="openProgram(program.id)">
         {{ program.name }}
         <b-badge variant="warning"
