@@ -34,6 +34,27 @@
         </b-button>
       </b-button-group>
     </b-row>
+
+    <b-row>
+      <b-alert
+        :show="dismissCountDownSuccess"
+        dismissible
+        fade
+        variant="success"
+        @dismissed="dismissCountDownSuccess=0"
+      >
+        <p>{{ successAlertText }}</p>
+      </b-alert>
+
+      <b-alert
+        :show="dismissCountDownWarning"
+        dismissible
+        variant="warning"
+        @dismissed="dismissCountDownWarning=0"
+      >
+        <p>{{ warningAlertText }}</p>
+      </b-alert>
+    </b-row>
   </div>
 </template>
 
@@ -44,14 +65,20 @@
   // Import stylesheet
   import 'vue-loading-overlay/dist/vue-loading.css';
   import RepositoryFactory from '../../apiAccess/repositoryFactory';
+
   const ProgramRepository = RepositoryFactory.get('program');
 
-  export default {
+export default {
   name: 'code-mirror-control-panel',
   data() {
     return {
       isLoading: false,
       file: null,
+      dismissSecs: 3,
+      dismissCountDownSuccess: 0,
+      dismissCountDownWarning: 0,
+      successAlertText: '',
+      warningAlertText: '',
       codemirrorThemes: [
         { value: 'default', text: 'default' },
         { value: '3024-day', text: '3024-day' },
@@ -115,117 +142,129 @@
         { value: 'yonce', text: 'yonce' },
         { value: 'zenburn', text: 'zenburn' },
       ],
-        };
-    },
-    components: {
-      Loading
-    },
-    computed: {
-      selectedCodemirrorTheme: {
-        get() {
-            return this.$store.state.codemirrorTheme;
-        },
-        set(selectedCodemirrorTheme) {
-            this.$store.commit('setCodemirrorTheme', selectedCodemirrorTheme);
-        },
+    };
+  },
+  components: {
+    Loading
+  },
+  computed: {
+    selectedCodemirrorTheme: {
+      get() {
+          return this.$store.state.codemirrorTheme;
       },
-      programName: {
-        get() {
-            return this.selectedProgram.name;
-        },
-        set(newName) {
-            const { selectedProgram } = this;
+      set(selectedCodemirrorTheme) {
+          this.$store.commit('setCodemirrorTheme', selectedCodemirrorTheme);
+      },
+    },
+    programName: {
+      get() {
+          return this.selectedProgram.name;
+      },
+      set(newName) {
+          const { selectedProgram } = this;
 
-            if (selectedProgram.name !== newName) {
-                selectedProgram.name = newName;
-                selectedProgram.changed = true;
-                this.$store.commit('setSelectedProgram', selectedProgram);
-            }
+          if (selectedProgram.name !== newName) {
+              selectedProgram.name = newName;
+              selectedProgram.changed = true;
+              this.$store.commit('setSelectedProgram', selectedProgram);
+          }
+      }
+    },
+    selectedProgram() {
+        if (this.$store.state.selectedProgram == null) {
+            return '';
         }
-      },
-      selectedProgram() {
-          if (this.$store.state.selectedProgram == null) {
-              return '';
-          }
-          return this.$store.state.selectedProgram;
-      }
-    },
-    methods: {
-      runProgram() {
-          const { selectedProgram } = this.$store.state;
-          let codeResultOutput = null;
+        return this.$store.state.selectedProgram;
+    }
+  },
+  methods: {
+    runProgram() {
+      const { selectedProgram } = this.$store.state;
+      let codeResultOutput = null;
 /*
-          functioddn yourCustomLog(msfsg) {
-            var oldLog = console.log;
-            console.log = functioasdn (message) {
-              alert(message);
-              oldLog.apply(console, arguments);
-            };
-          }asd
+      functioddn yourCustomLog(msfsg) {
+        var oldLog = console.log;
+        console.log = functioasdn (message) {
+          alert(message);
+          oldLog.apply(console, arguments);
+        };
+      }asd
 
-          window.console.log = yourCustomLog;*/
+      window.console.log = yourCustomLog;*/
 
-          this.isLoading = true;
+      this.isLoading = true;
 
-          test().then(() => {
-              pyodide.loadPackage(['numpy', 'pandas']).then(() => {
-                  codeResultOutput = pyodide.runPython(selectedProgram.code);
-                  this.prepareChartData(codeResultOutput);
-                  this.isLoading = false;
-              }).catch(e => {
-                  this.$store.commit('setPythonCodeErrors', e);
-                  this.isLoading = false;
-              });
-          }).catch(e => {
-              this.isLoading = false;
-          });
-        },
-
-      newProgram() {
-          let programs = this.$store.state.savedPrograms;
-          let maxId = Math.max(...programs.map(program => program.id));
-          let newProgram = {
-              id: maxId + 1,
-              name: 'New program',
-              code: '',
-              changed: true,
-          };
-
-          this.$store.commit('setSelectedProgram', newProgram);
-          this.$store.commit('setNewProgram', newProgram);
+      test().then(() => {
+        pyodide.loadPackage(['numpy', 'pandas']).then(() => {
+          codeResultOutput = pyodide.runPython(selectedProgram.code);
+          this.prepareChartData(codeResultOutput);
+          this.isLoading = false;
+        }).catch(e => {
+          this.$store.commit('setPythonCodeErrors', e);
+          this.isLoading = false;
+        });
+      }).catch(e => {
+        this.isLoading = false;
+      });
       },
 
-      prepareChartData(codeResultOutput) {
-          console.log(codeResultOutput);
-          if (codeResultOutput == null) {
-              alert('You didn`t return any data. Chart won`t be drown');
-          } else {
-            this.$store.commit('setCodeResultOutput', codeResultOutput);
-          }
-      },
-
-      saveProgram() {
-        let program = this.selectedProgram;
-        program.changed = false;
-        this.$store.commit('setSelectedProgram', program);
-
-        const data = ProgramRepository.save(program);
-        data.then((response) => {
-        //  TODO Implement here actions
-        }).catch((errorResponse) => {
-        //  TODO Implement here actions
-        })
-      },
-
-      deleteProgram() {
-          let programs = this.$store.state.savedPrograms;
-          const minProgramId = Math.min(...programs.map(program => program.id));
-          const selectedProgram = programs.find(program => program.id === minProgramId);
-
-          this.$store.commit('deleteSavedProgram', this.selectedProgram);
-          this.$store.commit('setSelectedProgram', selectedProgram);
-          // TODO  Make delete request to server
+    prepareChartData(codeResultOutput) {
+      console.log(codeResultOutput);
+      if (codeResultOutput == null) {
+        alert('You didn`t return any data. Chart won`t be drown');
+      } else {
+        this.$store.commit('setCodeResultOutput', codeResultOutput);
       }
     },
+
+    newProgram() {
+      let programs = this.$store.state.savedPrograms;
+      let maxId = Math.max(...programs.map(program => program.id));
+      let newProgram = {
+        id: maxId + 1,
+        name: 'New program',
+        code: '',
+        changed: true,
+        created: true,
+      };
+
+      this.$store.commit('setSelectedProgram', newProgram);
+      this.$store.commit('addProgramToSavedPrograms', newProgram);
+    },
+
+    saveProgram() {
+      let program = this.selectedProgram;
+      program.changed = false;
+      this.$store.commit('setSelectedProgram', program);
+
+      const data = ProgramRepository.save(program);
+      data.then((response) => {
+        this.showSuccessAlert('Program saved.');
+      }).catch((errorResponse) => {
+        console.log(errorResponse.response);
+        this.showWarningAlert('Program NOT saved. Something went wrong.');
+      })
+    },
+
+    showSuccessAlert(alertText) {
+      this.successAlertText = alertText;
+      this.dismissCountDownSuccess = this.dismissSecs
+    },
+
+    showWarningAlert(alertText) {
+      this.warningAlertText = alertText;
+      this.dismissCountDownWarning = this.dismissSecs
+    },
+
+    deleteProgram() {
+      let programs = this.$store.state.savedPrograms;
+      const minProgramId = Math.min(...programs.map(program => program.id));
+      const selectedProgram = programs.find(program => program.id === minProgramId);
+
+      this.$store.commit('deleteSavedProgram', this.selectedProgram);
+      this.$store.commit('setSelectedProgram', selectedProgram);
+      // TODO  Make delete request to server
+    }
+  },
 };
 </script>
