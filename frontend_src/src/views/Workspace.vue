@@ -37,7 +37,7 @@ export default {
       };
 
       this.$store.commit('setSelectedProgram', newProgram);
-      this.$store.commit('setNewProgram', newProgram);
+      this.$store.commit('addProgramToSavedPrograms', newProgram);
     },
     selectProgramWithMinId(programs) {
       const minProgramId = Math.min(...programs.map(program => program.id));

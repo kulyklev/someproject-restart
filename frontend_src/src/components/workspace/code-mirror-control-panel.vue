@@ -234,16 +234,31 @@ export default {
 
     saveProgram() {
       let program = this.selectedProgram;
-      program.changed = false;
-      this.$store.commit('setSelectedProgram', program);
+      let data = null;
 
-      const data = ProgramRepository.save(program);
+      if (Object.prototype.hasOwnProperty.call(program, 'created')) {
+        data = ProgramRepository.save(program);
+      } else {
+        data = ProgramRepository.update(program);
+      }
+
       data.then((response) => {
         this.showSuccessAlert('Program saved.');
+
+        let savedProgram = {
+            id: response.data.id,
+            name: response.data.name,
+            code: response.data.program,
+            changed: false
+        };
+
+        this.$store.commit('deleteSavedProgram', program);
+        this.$store.commit('setSelectedProgram', savedProgram);
+        this.$store.commit('addProgramToSavedPrograms', savedProgram);
       }).catch((errorResponse) => {
         console.log(errorResponse.response);
-        this.showWarningAlert('Program NOT saved. Something went wrong.');
-      })
+        this.showWarningAlert('Program NOT saved.' + errorResponse.response.data.message);
+      });
     },
 
     showSuccessAlert(alertText) {
