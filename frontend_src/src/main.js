@@ -3,12 +3,14 @@ import BootstrapVue from 'bootstrap-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import "./formValidation/vee-validate";
+import './formValidation/vee-validate';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import '@/assets/styles/main.scss';
+import RepositoryFactory from './apiAccess/repositoryFactory';
 
+const AuthRepository = RepositoryFactory.get('auth');
 
 library.add(faPlay);
 
@@ -21,4 +23,11 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  created() {
+    const token = localStorage.getItem('user-token');
+
+    if (token) {
+      AuthRepository.setAuthToken(token);
+    }
+  },
 }).$mount('#app');

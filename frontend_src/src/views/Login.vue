@@ -111,6 +111,7 @@ export default {
         this.loadPrograms();
         this.$store.commit('setUser', user);
       }).catch((errorResponse) => {
+        localStorage.removeItem('user-token');
         const { errors } = errorResponse.response.data;
 
         if (Object.prototype.hasOwnProperty.call(errors, 'email')) {
