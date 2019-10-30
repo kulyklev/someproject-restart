@@ -138,15 +138,10 @@ export default {
       return null;
     },
     onSubmit() {
-      console.log('Form submitted yay!');
-
       const data = AuthRepository.register(this.form);
+
       data.then((response) => {
-        console.log(response.data);
-        console.log(response.status);
-        console.log(response.statusText);
-        console.log(response.headers);
-        console.log(response.config);
+      //  TODO Implement here actions
       }).catch((errorResponse) => {
         const { errors } = errorResponse.response.data;
 

@@ -13,7 +13,6 @@ export default {
 
     formData.set('name', newProgram.name);
     formData.set('program', newProgram.code);
-    console.log(Repository);
 
     return Repository.post('/programs', formData);
   },

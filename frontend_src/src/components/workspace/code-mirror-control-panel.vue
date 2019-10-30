@@ -206,17 +206,14 @@
 
       saveProgram() {
         let program = this.selectedProgram;
-          console.log('123')
-          program.changed = false;
+        program.changed = false;
         this.$store.commit('setSelectedProgram', program);
 
         const data = ProgramRepository.save(program);
         data.then((response) => {
-            console.log('222')
-          console.log(response.status);
+        //  TODO Implement here actions
         }).catch((errorResponse) => {
-            console.log('333')
-          console.log(errorResponse.response.status);
+        //  TODO Implement here actions
         })
       },
 
