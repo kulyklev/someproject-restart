@@ -1,44 +1,72 @@
 <template>
-  <nav class="navbar-dark bg-primary navbar navbar-expand-lg">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <b-navbar toggleable="lg" type="dark" variant="primary">
+    <b-navbar-brand to="/">Project name</b-navbar-brand>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <router-link to="/" class="nav-link">Home</router-link>
-        </li>
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <li class="nav-item">
-          <router-link to="/workspace" class="nav-link">Workspace</router-link>
-        </li>
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item to="/">Home</b-nav-item>
+        <b-nav-item to="/workspace">Workspace</b-nav-item>
+        <b-nav-item to="/faq">About</b-nav-item>
+      </b-navbar-nav>
 
-        <li class="nav-item">
-          <router-link to="/faq" class="nav-link" >About</router-link>
-        </li>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item v-for="item in menuItems"
+                    v-bind:key="item.title">
+          {{ item.title }}
+        </b-nav-item>
 
-        <li class="nav-item">
-          <router-link to="/register" class="nav-link">Register</router-link>
-        </li>
-
-        <li class="nav-item">
-          <router-link to="/login" class="nav-link">Login</router-link>
-        </li>
-      </ul>
-    </div>
-  </nav>
+        <b-nav-item v-if="userIsAuthenticated"
+                    @click="onLogout">
+          Logout
+        </b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 
 <script>
 export default {
   name: 'nav-header',
+  data() {
+    return {
+
+    };
+  },
+  computed: {
+    menuItems() {
+      let menuItems = [
+        { title: 'Register', link: '/register' },
+        { title: 'Login', link: '/login' },
+      ];
+
+      if (this.userIsAuthenticated) {
+        menuItems = [];
+      }
+
+      return menuItems;
+    },
+
+    userIsAuthenticated() {
+      return !!this.$store.getters.user.token;
+    },
+  },
+  methods: {
+    onLogout() {
+      const user = {
+        token: null,
+      };
+
+      localStorage.removeItem('user-token');
+      this.$store.commit('setSelectedProgram', null);
+      this.$store.commit('setSavedPrograms', []);
+      this.$store.commit('setUser', user);
+      this.$store.commit('setCodeResultOutput', '');
+      this.$store.commit('setPythonCodeErrors', '');
+
+      this.$router.push({ name: 'home' });
+    },
+  },
 };
 </script>

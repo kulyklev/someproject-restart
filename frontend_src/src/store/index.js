@@ -76,13 +76,16 @@ export default new Vuex.Store({
       state.savedPrograms = programs;
     },
     deleteSavedProgram(state, programToDelete) {
-      let programs = state.savedPrograms;
+      const programs = state.savedPrograms;
       const foundIndex = programs.findIndex(programm => programm.id === programToDelete.id);
       programs.splice(foundIndex, 1);
       state.savedPrograms = programs;
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setSavedPrograms(state, savedPrograms) {
+      state.savedPrograms = savedPrograms;
     },
   },
   actions: {
