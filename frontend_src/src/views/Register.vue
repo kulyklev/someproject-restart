@@ -120,10 +120,10 @@ export default {
   data() {
     return {
       form: {
-        name: 'qwe',
-        email: 'qwe@qwe.com',
-        password: '123456789',
-        passwordConfirmation: '123',
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
       },
     };
   },
@@ -142,6 +142,8 @@ export default {
 
       data.then((response) => {
       //  TODO Implement here actions
+
+        this.$router.push({ name: 'homeworkspace' });
       }).catch((errorResponse) => {
         const { errors } = errorResponse.response.data;
 

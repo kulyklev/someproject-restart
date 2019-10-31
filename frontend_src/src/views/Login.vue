@@ -110,6 +110,7 @@ export default {
 
         this.loadPrograms();
         this.$store.commit('setUser', user);
+        this.$router.push({ name: 'workspace' });
       }).catch((errorResponse) => {
         localStorage.removeItem('user-token');
         const { errors } = errorResponse.response.data;

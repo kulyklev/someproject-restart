@@ -13,7 +13,8 @@
 
       <b-navbar-nav class="ml-auto">
         <b-nav-item v-for="item in menuItems"
-                    v-bind:key="item.title">
+                    v-bind:key="item.title"
+                    :to="item.link">
           {{ item.title }}
         </b-nav-item>
 
