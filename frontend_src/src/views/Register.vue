@@ -146,10 +146,10 @@ export default {
         };
 
         AuthRepository.setAuthToken(user.token);
-
         localStorage.setItem('user-token', user.token);
 
         this.$store.commit('setUser', user);
+        this.newProgram();
 
         this.$router.push({ name: 'workspace' });
       }).catch((errorResponse) => {
@@ -168,6 +168,7 @@ export default {
         }
       });
     },
+
     resetForm() {
       this.from.name = '';
       this.from.email = '';
@@ -177,6 +178,7 @@ export default {
         this.$refs.observer.reset();
       });
     },
+
     newProgram() {
       const newProgram = {
         id: 1,
