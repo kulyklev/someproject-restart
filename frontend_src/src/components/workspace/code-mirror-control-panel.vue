@@ -196,7 +196,7 @@ export default {
 
       test().then(() => {
         pyodide.loadPackage(['numpy', 'pandas']).then(() => {
-          codeResultOutput = pyodide.runPython(selectedProgram.code);
+          codeResultOutput = pyodide.runPython(selectedProgram.program);
           this.prepareChartData(codeResultOutput);
           this.isLoading = false;
         }).catch(e => {
