@@ -96,8 +96,7 @@ export default new Vuex.Store({
       const data = ProgramRepository.get();
 
       data.then((response) => {
-        commit('setSavedPrograms', response.data);
-        console.log(response.data);
+        commit('setSavedPrograms', response.data.data);
       }).catch((errorResponse) => {
         console.log(errorResponse.response);
       });

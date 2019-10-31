@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
+use App\Http\Resources\ProgramsCollection;
 use App\Models\Program;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class ProgramController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $userPrograms = $user->programs;
+        $userPrograms = new ProgramsCollection($user->programs);
 
         return response($userPrograms, Response::HTTP_OK);
     }

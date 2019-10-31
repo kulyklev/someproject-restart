@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProgramsCollection extends ResourceCollection
 {
+    public $collects = 'App\Http\Resources\Program';
+
     /**
      * Transform the resource collection into an array.
      *
@@ -14,6 +16,8 @@ class ProgramsCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection,
+        ];
     }
 }
