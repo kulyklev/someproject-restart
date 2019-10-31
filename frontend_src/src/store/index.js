@@ -1,5 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import RepositoryFactory from '../apiAccess/repositoryFactory';
+
+const ProgramRepository = RepositoryFactory.get('program');
 
 Vue.use(Vuex);
 
@@ -10,7 +13,7 @@ export default new Vuex.Store({
       {
         id: 1,
         name: 'File download',
-        code: 'import pyodide\n'
+        program: 'import pyodide\n'
           + 'import pandas as pd\n'
           + '\n'
           + 'data_url = "http://www.sentiweb.fr/datasets/incidence-PAY-3.csv"\n'
@@ -23,7 +26,7 @@ export default new Vuex.Store({
       {
         id: 2,
         name: 'File download from browser. Not good idea',
-        code: 'from js import document\n'
+        program: 'from js import document\n'
           + 'from pprint import pprint\n'
           + '\n'
           + '\n'
@@ -37,7 +40,7 @@ export default new Vuex.Store({
       {
         id: 3,
         name: 'Building chart',
-        code: 'import numpy as np\n'
+        program: 'import numpy as np\n'
           + '\n'
           + 'x = np.linspace(0, 2.0 * np.pi, 100)\n'
           + 'y = np.sin(x)\n'
@@ -46,7 +49,7 @@ export default new Vuex.Store({
       },
     ],
     selectedProgram: null,
-    code: '',
+    program: '',
     codeResultOutput: '',
     pythonCodeErrors: '',
     user: {
@@ -89,6 +92,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    loadSavedPrograms({ commit }) {
+      const data = ProgramRepository.get();
+
+      data.then((response) => {
+        commit('setSavedPrograms', response.data);
+        console.log(response.data);
+      }).catch((errorResponse) => {
+        console.log(errorResponse.response);
+      });
+    },
   },
   getters: {
     user(state) {

@@ -223,7 +223,7 @@ export default {
       let newProgram = {
         id: maxId + 1,
         name: 'New program',
-        code: '',
+        program: '',
         changed: true,
         created: true,
       };
@@ -248,7 +248,7 @@ export default {
         let savedProgram = {
             id: response.data.id,
             name: response.data.name,
-            code: response.data.program,
+            program: response.data.program,
             changed: false
         };
 

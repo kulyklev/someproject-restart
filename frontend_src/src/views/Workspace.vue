@@ -32,7 +32,7 @@ export default {
       const newProgram = {
         id: 1,
         name: 'New program',
-        code: '',
+        program: '',
         changed: true,
       };
 

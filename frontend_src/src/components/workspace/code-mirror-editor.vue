@@ -141,13 +141,13 @@ export default {
     },
     code: {
       get() {
-        return this.selectedProgram.code;
+        return this.selectedProgram.program;
       },
       set(newCode) {
         const { selectedProgram } = this;
 
-        if (selectedProgram.code !== newCode) {
-          selectedProgram.code = newCode;
+        if (selectedProgram.program !== newCode) {
+          selectedProgram.program = newCode;
           selectedProgram.changed = true;
           this.$store.commit('setSelectedProgram', selectedProgram);
           this.$store.commit('updateSavedPrograms', selectedProgram);

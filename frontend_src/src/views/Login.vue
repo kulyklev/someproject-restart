@@ -105,11 +105,10 @@ export default {
         };
 
         AuthRepository.setAuthToken(user.token);
-
         localStorage.setItem('user-token', user.token);
-
-        this.loadPrograms();
         this.$store.commit('setUser', user);
+        this.$store.dispatch('loadSavedPrograms');
+
         this.$router.push({ name: 'workspace' });
       }).catch((errorResponse) => {
         localStorage.removeItem('user-token');
@@ -131,10 +130,6 @@ export default {
       requestAnimationFrame(() => {
         this.$refs.observer.reset();
       });
-    },
-
-    loadPrograms() {
-
     },
   },
 };

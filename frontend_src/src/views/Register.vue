@@ -141,9 +141,17 @@ export default {
       const data = AuthRepository.register(this.form);
 
       data.then((response) => {
-      //  TODO Implement here actions
+        const user = {
+          token: response.data.access_token,
+        };
 
-        this.$router.push({ name: 'homeworkspace' });
+        AuthRepository.setAuthToken(user.token);
+
+        localStorage.setItem('user-token', user.token);
+
+        this.$store.commit('setUser', user);
+
+        this.$router.push({ name: 'workspace' });
       }).catch((errorResponse) => {
         const { errors } = errorResponse.response.data;
 
@@ -168,6 +176,18 @@ export default {
       requestAnimationFrame(() => {
         this.$refs.observer.reset();
       });
+    },
+    newProgram() {
+      const newProgram = {
+        id: 1,
+        name: 'New program',
+        program: '',
+        changed: true,
+        created: true,
+      };
+
+      this.$store.commit('setSelectedProgram', newProgram);
+      this.$store.commit('setSavedPrograms', [newProgram]);
     },
   },
 };
