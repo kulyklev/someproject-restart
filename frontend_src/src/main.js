@@ -28,6 +28,7 @@ new Vue({
 
     if (token) {
       AuthRepository.setAuthToken(token);
+      this.$store.dispatch('loadSavedPrograms');
     }
   },
 }).$mount('#app');
