@@ -43,9 +43,28 @@ x = np.linspace(0, 2.0 * np.pi, 100)
 y = np.sin(x)
 x, y';
 
+        $program4 = new \App\Models\Program();
+        $program4->name = 'Building in python';
+        $program4->program = 'import matplotlib.pyplot as plt
+                import numpy as np
+                import io, base64
+
+                x = np.linspace(0, 2.0 * np.pi, 100)
+                y = np.sin(x)
+
+
+                fig, ax = plt.subplots()
+                ax.plot(x, y)
+
+                buf = io.BytesIO()
+                fig.savefig(buf, format=\'png\')
+                buf.seek(0)
+                img_str = \'data:image/png;base64,\' + base64.b64encode(buf.read()).decode(\'UTF-8\')';
+
         $user->programs()->save($program1);
         $user->programs()->save($program2);
         $user->programs()->save($program3);
+        $user->programs()->save($program4);
 
         /*factory(App\Models\User::class, 2)->create()->each(function ($user) {
             $user->programs()->save(factory(App\Models\Program::class)->make());
