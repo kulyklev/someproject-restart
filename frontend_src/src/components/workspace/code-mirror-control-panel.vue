@@ -209,6 +209,7 @@ export default {
       },
 
     prepareChartData(codeResultOutput) {
+      //  TODO Delete console.log
       console.log(codeResultOutput);
       if (codeResultOutput == null) {
         alert('You didn`t return any data. Chart won`t be drown');
