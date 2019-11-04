@@ -1,15 +1,16 @@
 <template>
   <div class="workspace w-100">
     <b-row class="ml-1 mr-1">
-      <b-col cols="2">
+      <b-col cols="3">
         <saved-programs-list></saved-programs-list>
       </b-col>
-      <b-col>
+
+      <b-col md="9" lg="5">
         <code-mirror-editor></code-mirror-editor>
       </b-col>
-      <b-col>
+
+      <b-col md="9" lg="5">
         <code-result-output></code-result-output>
-<!--        <line-chart/>-->
       </b-col>
     </b-row>
   </div>

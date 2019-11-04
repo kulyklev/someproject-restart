@@ -181,16 +181,16 @@ export default {
     runProgram() {
       const { selectedProgram } = this.$store.state;
       let codeResultOutput = null;
-/*
-      functioddn yourCustomLog(msfsg) {
+
+      /*function yourCustomLog(msfsg) {
         var oldLog = console.log;
-        console.log = functioasdn (message) {
+        console.log = function (message) {
           alert(message);
           oldLog.apply(console, arguments);
         };
-      }asd
+      }*/
 
-      window.console.log = yourCustomLog;*/
+      // window.console.log = yourCustomLog;
 
       this.isLoading = true;
 

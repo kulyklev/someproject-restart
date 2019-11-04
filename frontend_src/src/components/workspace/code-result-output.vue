@@ -1,15 +1,17 @@
 <template>
   <b-container>
-    <h1>Here is output</h1>
+    <h2>Charts</h2>
+    <b-row>
+      <b-col cols="12" class="halfViewPortHeight">
+        <highcharts :options="chartOptions"></highcharts>
+      </b-col>
 
-    <b-row class="w-100">
-      <highcharts :options="chartOptions"></highcharts>
+      <b-col cols="12" class="halfViewPortHeight">
+        <h2>Python console</h2>
+        <pre class="text-left border">{{ pythonCodeErrors }}</pre>
+      </b-col>
     </b-row>
-
-    <b-row >
-      <h1>Python errors</h1>
-      <pre class="text-left border">{{ pythonCodeErrors }}</pre>
-    </b-row>
+    <div id="pyplotdiv"><img id="pyplotfigure"/></div>
   </b-container>
 </template>
 
