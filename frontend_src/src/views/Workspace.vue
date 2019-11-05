@@ -1,19 +1,23 @@
 <template>
-  <div class="workspace w-100">
+  <b-container fluid>
     <b-row class="ml-1 mr-1">
-      <b-col cols="3">
+      <b-col sm="3" md="2">
         <saved-programs-list></saved-programs-list>
       </b-col>
 
-      <b-col md="9" lg="5">
-        <code-mirror-editor></code-mirror-editor>
-      </b-col>
+      <b-col sm="9" md="10">
+        <b-row>
+          <b-col md="6">
+            <code-mirror-editor></code-mirror-editor>
+          </b-col>
 
-      <b-col md="9" lg="5">
-        <code-result-output></code-result-output>
+          <b-col md="6">
+            <code-result-output></code-result-output>
+          </b-col>
+        </b-row>
       </b-col>
     </b-row>
-  </div>
+  </b-container>
 </template>
 
 <script>

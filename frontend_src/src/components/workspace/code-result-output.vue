@@ -1,15 +1,13 @@
 <template>
-  <b-container>
+  <b-container fluid>
     <h2>Charts</h2>
     <b-row>
-      <b-col cols="12" class="halfViewPortHeight">
-        <highcharts :options="chartOptions"></highcharts>
-      </b-col>
+      <highcharts :options="chartOptions"></highcharts>
+    </b-row>
 
-      <b-col cols="12" class="halfViewPortHeight">
-        <h2>Python console</h2>
-        <pre class="text-left border">{{ pythonCodeErrors }}</pre>
-      </b-col>
+    <b-row>
+      <h2>Python console</h2>
+      <pre class="text-left border">{{ pythonCodeErrors }}</pre>
     </b-row>
     <div id="pyplotdiv"><img id="pyplotfigure"/></div>
   </b-container>
