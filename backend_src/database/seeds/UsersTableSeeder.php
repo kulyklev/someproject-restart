@@ -61,10 +61,20 @@ x, y';
                 buf.seek(0)
                 img_str = \'data:image/png;base64,\' + base64.b64encode(buf.read()).decode(\'UTF-8\')';
 
+        $program5 = new \App\Models\Program();
+        $program5->name = 'Build chart';
+        $program5->program = 'import numpy as np
+            x = np.linspace(0, 2.0 * np.pi, 100)
+            y = np.sin(x)
+            
+            tmp = np.vstack((x, y)).T
+            tmp';
+
         $user->programs()->save($program1);
         $user->programs()->save($program2);
         $user->programs()->save($program3);
         $user->programs()->save($program4);
+        $user->programs()->save($program5);
 
         /*factory(App\Models\User::class, 2)->create()->each(function ($user) {
             $user->programs()->save(factory(App\Models\Program::class)->make());
