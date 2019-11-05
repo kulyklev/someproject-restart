@@ -142,6 +142,7 @@ export default {
         { value: 'yonce', text: 'yonce' },
         { value: 'zenburn', text: 'zenburn' },
       ],
+      logs: '',
     };
   },
   components: {
@@ -178,28 +179,47 @@ export default {
     }
   },
   methods: {
+      lala() {
+          alert('asd')
+      },
     runProgram() {
       const { selectedProgram } = this.$store.state;
       let codeResultOutput = null;
       let pyPlotDiv = document.getElementById("pyPlotDiv");
       pyPlotDiv.classList.add('d-none');
 
-      /*function yourCustomLog(msfsg) {
-        var oldLog = console.log;
-        console.log = function (message) {
-          alert(message);
-          oldLog.apply(console, arguments);
-        };
-      }*/
+      (function(){
+        var _log = console.log;
+        var _error = console.error;
+        var _warning = console.warning;
 
-      // window.console.log = yourCustomLog;
+        console.error = function(errMessage){
+          this.lala();
+          _error.apply(console,arguments);
+        };
+
+        console.log = function(logMessage){
+            this.lala();
+          // Do something with the log message
+          _log.apply(console,arguments);
+        };
+
+        console.warning = function(warnMessage){
+          // do something with the warn message
+          _warning.apply(console,arguments);
+        };
+      })();
+
+      console.log('1234')
 
       this.isLoading = true;
 
       test().then(() => {
-        pyodide.loadPackage(['numpy', 'pandas', 'matplotlib']).then(() => {
+        pyodide.loadPackage().then(() => {
           codeResultOutput = pyodide.runPython(selectedProgram.program);
           const imgStr = pyodide.globals.img_str;
+
+          // console.log(pyodide.globals);
 
           if (imgStr) {
             this.displayImage(imgStr);
