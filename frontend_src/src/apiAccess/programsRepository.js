@@ -29,8 +29,6 @@ export default {
 
   delete(selectedProgram) {
     const programId = selectedProgram.id;
-    const formData = new FormData();
-    formData.set('_method', 'DELETE');
 
     return Repository.delete(`/programs/${programId}`);
   },
