@@ -181,6 +181,8 @@ export default {
     runProgram() {
       const { selectedProgram } = this.$store.state;
       let codeResultOutput = null;
+      let pyPlotDiv = document.getElementById("pyPlotDiv");
+      pyPlotDiv.classList.add('d-none');
 
       /*function yourCustomLog(msfsg) {
         var oldLog = console.log;
@@ -195,9 +197,30 @@ export default {
       this.isLoading = true;
 
       test().then(() => {
-        pyodide.loadPackage(['numpy', 'pandas']).then(() => {
+        pyodide.loadPackage(['numpy', 'pandas', 'matplotlib']).then(() => {
           codeResultOutput = pyodide.runPython(selectedProgram.program);
-          this.prepareChartData(codeResultOutput);
+          const imgStr = pyodide.globals.img_str;
+
+          if (imgStr) {
+            this.displayImage(imgStr);
+          } else {
+              let pyPlotDiv = document.getElementById("pyPlotDiv");
+              pyPlotDiv.classList.add("d-none");
+          }
+
+          if (codeResultOutput) {
+            let jsChart = document.getElementById("jsChart");
+            jsChart.classList.remove("d-none");
+            this.buildChart(codeResultOutput);
+          } else {
+            let jsChart = document.getElementById("jsChart");
+            jsChart.classList.add("d-none");
+          }
+
+          if (!imgStr && !codeResultOutput) {
+            // TODO Something display to show that no valid data were returned
+          }
+
           this.isLoading = false;
         }).catch(e => {
           this.$store.commit('setPythonCodeErrors', e);
@@ -206,11 +229,17 @@ export default {
       }).catch(e => {
         this.isLoading = false;
       });
-      },
+    },
 
-    prepareChartData(codeResultOutput) {
-      //  TODO Delete console.log
-      console.log(codeResultOutput);
+    displayImage(imgStr) {
+        let pyPlotDiv = document.getElementById("pyPlotDiv");
+        let pyPlotFigure = document.getElementById("pyPlotFigure");
+
+        pyPlotDiv.classList.remove("d-none");
+        pyPlotFigure.src = imgStr
+    },
+
+    buildChart(codeResultOutput) {
       if (codeResultOutput == null) {
         alert('You didn`t return any data. Chart won`t be drown');
       } else {

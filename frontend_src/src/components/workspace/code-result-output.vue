@@ -1,15 +1,20 @@
 <template>
   <b-container fluid>
-    <h2>Charts</h2>
     <b-row>
+      <h2>Data visualisation</h2>
+    </b-row>
+    <b-row class="halfViewPortHeight" id="jsChart">
       <highcharts :options="chartOptions"></highcharts>
     </b-row>
 
-    <b-row>
+    <b-row class="d-none" id="pyPlotDiv">
+      <b-img id="pyPlotFigure"/>
+    </b-row>
+
+    <b-row class="halfViewPortHeight">
       <h2>Python console</h2>
       <pre class="text-left border">{{ pythonCodeErrors }}</pre>
     </b-row>
-    <div id="pyplotdiv"><img id="pyplotfigure"/></div>
   </b-container>
 </template>
 
@@ -63,9 +68,11 @@ export default {
           res.push([xAxis[i], yAxis[i]]);
         }
         const tmp = {};
-        tmp.data = res;
+        tmp.data = chartData;
+
         console.log(tmp);
-        return tmp;
+
+        return chartData;
       }
       // alert('Data for xAxis and yAxis has different length');
       return [];
