@@ -27,7 +27,11 @@ export default {
     return Repository.post(`/programs/${programId}`, formData);
   },
 
-  delete(programId) {
-    // TODO delete program
+  delete(selectedProgram) {
+    const programId = selectedProgram.id;
+    const formData = new FormData();
+    formData.set('_method', 'DELETE');
+
+    return Repository.delete(`/programs/${programId}`);
   },
 };

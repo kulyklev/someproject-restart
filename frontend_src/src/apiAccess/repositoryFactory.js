@@ -8,7 +8,6 @@ const repositories = {
 
 const RepositoryFactory = {
   get: name => repositories[name],
-  // post: name => repositories[name],
 };
 
 export default RepositoryFactory;

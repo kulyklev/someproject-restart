@@ -306,9 +306,8 @@ export default {
       const minProgramId = Math.min(...programs.map(program => program.id));
       const selectedProgram = programs.find(program => program.id === minProgramId);
 
-      this.$store.commit('deleteSavedProgram', this.selectedProgram);
+      this.$store.dispatch('deleteProgramAction', this.selectedProgram);
       this.$store.commit('setSelectedProgram', selectedProgram);
-      // TODO  Make delete request to server
     }
   },
 };

@@ -101,6 +101,17 @@ export default new Vuex.Store({
         console.log(errorResponse.response);
       });
     },
+
+    deleteProgramAction({ commit }, selectedProgram) {
+      commit('deleteSavedProgram', selectedProgram);
+
+      const programRepository = ProgramRepository.delete(selectedProgram);
+      programRepository.then((response) => {
+
+      }).catch((error) => {
+
+      });
+    },
   },
   getters: {
     user(state) {
