@@ -64,11 +64,28 @@ x, y';
         $program5 = new \App\Models\Program();
         $program5->name = 'Build chart';
         $program5->program = 'import numpy as np
-            x = np.linspace(0, 2.0 * np.pi, 100)
-            y = np.sin(x)
-            
-            tmp = np.vstack((x, y)).T
-            tmp';
+                x = np.linspace(0, 2.0 * np.pi, 100)
+                y = np.sin(x)
+                
+                x1 = np.linspace(0, 2.0 * np.pi, 100)
+                y1 = np.sin(x1)
+                
+                tmp = np.vstack((x, y)).T
+                tmp1 = np.vstack((x1, y1)).T
+                
+                listArr = []
+                listArr.append({
+                  "type": "line",
+                  "name": "lalala",
+                  "data": tmp,
+                })
+                listArr.append({
+                  "type": "line",
+                  "name": "lololo",
+                  "data": tmp1,
+                })
+                
+                listArr';
 
         $user->programs()->save($program1);
         $user->programs()->save($program2);
