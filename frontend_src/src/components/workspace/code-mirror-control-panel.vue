@@ -223,7 +223,7 @@ export default {
       this.isLoading = true;
 
       test().then(() => {
-        pyodide.loadPackage().then(() => {
+        pyodide.loadPackage(['numpy', 'pandas', 'matplotlib']).then(() => {
           codeResultOutput = pyodide.runPython(selectedProgram.program);
           const imgStr = pyodide.globals.img_str;
 
