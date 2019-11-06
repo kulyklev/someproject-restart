@@ -66,7 +66,7 @@
         oldCons.log(text);
 
         let outputElement = document.getElementById('pythonCodeOutput')
-        outputElement.textContent += text + '\n'
+        outputElement.value += text + '\n'
 
         // this.displayPythonMessages(oldCons, text);
         // Your code
@@ -220,6 +220,9 @@ export default {
       let pyPlotDiv = document.getElementById("pyPlotDiv");
       pyPlotDiv.classList.add('d-none');
 
+      let outputElement = document.getElementById('pythonCodeOutput')
+      outputElement.value = '';
+
       this.isLoading = true;
 
       test().then(() => {
@@ -251,7 +254,7 @@ export default {
 
           this.isLoading = false;
         }).catch(e => {
-          this.$store.commit('setPythonCodeErrors', e);
+          // this.$store.commit('setPythonCodeErrors', e);
           this.isLoading = false;
         });
       }).catch(e => {

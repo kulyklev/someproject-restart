@@ -12,8 +12,8 @@
     </b-row>
 
     <b-row class="halfViewPortHeight">
-      <h2>Python console</h2>
-      <pre class="text-left border" id="pythonCodeOutput">{{ pythonCodeErrors }}</pre>
+      <h2 style="max-height: 1.5em">Python console</h2>
+      <b-form-textarea id="pythonCodeOutput" class="bg-light" plaintext rows="15"></b-form-textarea>
     </b-row>
   </b-container>
 </template>
