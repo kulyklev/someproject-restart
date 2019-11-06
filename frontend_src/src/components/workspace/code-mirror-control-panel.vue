@@ -59,6 +59,41 @@
 </template>
 
 <script>
+  // define a new console
+  let console = (function(oldCons){
+    return {
+      log: function(text){
+        oldCons.log(text);
+
+        let outputElement = document.getElementById('pythonCodeOutput')
+        outputElement.textContent += text + '\n'
+
+        // this.displayPythonMessages(oldCons, text);
+        // Your code
+      },
+      info: function (text) {
+        oldCons.info(text);
+        // Your code
+      },
+      warn: function (text) {
+        oldCons.warn(text);
+        // Your code
+      },
+      error: function (text) {
+        oldCons.error(text);
+        // Your code
+      }
+    };
+  }(window.console));
+
+  //Then redefine the old console
+  window.console = console;
+
+  function displayPythonMessages(oldCons, text) {
+      oldCons.log(text + ' !!')
+      // this.$store.commit('setPythonCodeErrors', text);
+  }
+
   import {test} from '../../pyodide/pyodide';
   // Import component
   import Loading from 'vue-loading-overlay';
@@ -179,38 +214,11 @@ export default {
     }
   },
   methods: {
-      lala() {
-          alert('asd')
-      },
     runProgram() {
       const { selectedProgram } = this.$store.state;
       let codeResultOutput = null;
       let pyPlotDiv = document.getElementById("pyPlotDiv");
       pyPlotDiv.classList.add('d-none');
-
-      (function(){
-        var _log = console.log;
-        var _error = console.error;
-        var _warning = console.warning;
-
-        console.error = function(errMessage){
-          this.lala();
-          _error.apply(console,arguments);
-        };
-
-        console.log = function(logMessage){
-            this.lala();
-          // Do something with the log message
-          _log.apply(console,arguments);
-        };
-
-        console.warning = function(warnMessage){
-          // do something with the warn message
-          _warning.apply(console,arguments);
-        };
-      })();
-
-      console.log('1234')
 
       this.isLoading = true;
 
@@ -224,8 +232,8 @@ export default {
           if (imgStr) {
             this.displayImage(imgStr);
           } else {
-              let pyPlotDiv = document.getElementById("pyPlotDiv");
-              pyPlotDiv.classList.add("d-none");
+            let pyPlotDiv = document.getElementById("pyPlotDiv");
+            pyPlotDiv.classList.add("d-none");
           }
 
           if (codeResultOutput) {

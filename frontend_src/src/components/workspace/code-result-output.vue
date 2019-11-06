@@ -13,7 +13,7 @@
 
     <b-row class="halfViewPortHeight">
       <h2>Python console</h2>
-      <pre class="text-left border">{{ pythonCodeErrors }}</pre>
+      <pre class="text-left border" id="pythonCodeOutput">{{ pythonCodeErrors }}</pre>
     </b-row>
   </b-container>
 </template>
