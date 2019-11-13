@@ -9,11 +9,10 @@
         </b-card-text>
 
         <b-card-text>
-          1. Візуалізувати данні засобами Python, перетворити візуалізованні данні у катринку та відобразити її.
-          Данний спосіб краще підходить для відображення складних поверхонь та подібних речей.
-          Для побудови гафіків краще використовувати другий спосіб.
-          Для цього необхідно використати для візуалізації данних біблітеки <b>matplotlib</b> та перетворити
-          побудоване відображення у картинку. Картинку необхідно помістити у змнінну <b>img_str</b>. Приклад наведено нижче.
+          1. Візуалізація задопомогою засобів Python виконується наступним чином,
+          будується графік задопомогою біблітеки <b>matplotlib</b>, який потім перетворюється
+          у зображення. Зображення необхідно помістити у змнінну <b>img_str</b>.
+          Приклад наведено нижче.
 
           <codemirror v-model="codeExample1"
                       :options="cmOptions"
@@ -22,9 +21,12 @@
         </b-card-text>
 
         <b-card-text>
-          2. Візуалізувати данні засобами JavaScript. Для цього необхідно згенерувати точки за якими буде побудовано графік
-          та повернути масив об'єктів заданого формати. Де кожен об'єкт представляє собою одну криву на графіку.
-          Приклад побудови графіка та форматування даних з використанням данного способу наведено нижче.
+          2. Візуалізація даних засобами JavaScript відбувається задопомогою бібліотеки
+          <a href="https://www.highcharts.com/">Highcharts</a>. Для цього потрібно згенерувати об'єкт
+          chartOptions.series. Опис цього об'єкта та можливих значень можно знайти за
+          <a href="https://www.highcharts.com/docs/chart-concepts/series">цим посиланням</a> та
+          <a href="https://api.highcharts.com/highcharts/series">цим</a>.
+          <b>Згенерований об'єкт обов'язково повинен викликатися в останній строчці програми.</b>
 
           <codemirror v-model="codeExample2"
                       :options="cmOptions"
@@ -36,6 +38,20 @@
           3. Приклад побудови двох графіків задопомогою засобів JavaScript.
 
           <codemirror v-model="codeExample3"
+                      :options="cmOptions"
+                      class="text-left"
+                      style="border: 1px solid #eee; height: auto;"/>
+        </b-card-text>
+      </b-card>
+
+      <b-card title="Завантаження файлів з даними" class="text-left">
+        <b-card-text>
+          Зараз достпуний тільки один спосіб завантаження файлів задопомогою Python
+          бібліотеки pandas. Для цього необхідно завантажити файл у хмарне сховище
+          даних(наприклад Google Drive або Dropbox) та зробити його доступним за посиланням.
+          Приклад такого завантаження наведено нижче.
+
+          <codemirror v-model="codeExample4"
                       :options="cmOptions"
                       class="text-left"
                       style="border: 1px solid #eee; height: auto;"/>
@@ -139,6 +155,14 @@ export default {
                     + '})\n'
                     + '\n'
                     + 'listArr',
+      codeExample4: 'import pyodide\n'
+                    + 'import pandas as pd\n'
+                    + '\n'
+                    + 'data_url = "http://www.sentiweb.fr/datasets/incidence-PAY-3.csv"\n'
+                    + '\n'
+                    + 'raw_data = pd.read_csv(pyodide.open_url(data_url), skiprows=1)\n'
+                    + '\n'
+                    + 'print(raw_data)',
     };
   },
 };
